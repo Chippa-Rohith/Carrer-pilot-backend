@@ -11,6 +11,18 @@ const port = 8080;
 const secretKey = process.env.secretKey;
 
 app.use(bodyParser.json());
+const allowedOrigins = ['http://192.168.0.31:3000']; // Define your allowed origins
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // Database connection
 const db = mysql.createConnection({
@@ -51,7 +63,7 @@ app.post('/signup', (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 8);
     db.query('INSERT INTO golang_stud (username, password, first_name, last_name, email, phone_number, role) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-      [username, hashedPassword, first_name, last_name, email, phone_number, role], 
+      [userName, hashedPassword, first_name, last_name, email, phone_number, role], 
       (err, result) => {
         if (err) return res.status(500).send(err);
         res.status(200).send({ ResponseCode: 200, Respmessage: 'User successfully registered' });
