@@ -11,18 +11,8 @@ const port = 8080;
 const secretKey = process.env.secretKey;
 
 app.use(bodyParser.json());
-const allowedOrigins = ['http://192.168.0.31:3000']; // Define your allowed origins
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+app.use(cors());
 
 // Database connection
 const db = mysql.createConnection({
