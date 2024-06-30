@@ -64,7 +64,7 @@ app.post('/signup', (req, res) => {
 // Login
 app.post('/login', (req, res) => {
   const { userName, password } = req.body;
-  console.log(userName,password)
+  console.log(req.body)
 
   db.query('SELECT username, password, role FROM golang_stud WHERE username = ?', [userName], (err, results) => {
     if (err) return res.status(500).send(err);
