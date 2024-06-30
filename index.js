@@ -34,6 +34,7 @@ db.connect(err => {
 // Utility function to authenticate JWT tokens
 const authenticateToken = (req, res, next) => {
   const token = req.header('Token');
+  console.log(req, token)
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, secretKey, (err, user) => {
