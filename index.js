@@ -11,7 +11,6 @@ const port = 8080;
 const secretKey = process.env.secretKey;
 
 app.use(bodyParser.json());
-app.use(cors({ origin: process.env.ORIGINURL, credentials: true }));
 
 // Database connection
 const db = mysql.createConnection({
