@@ -8,15 +8,18 @@ const bcrypt = require('bcryptjs');
 
 const app = express();
 const port = 8080;
-const secretKey = 'SecretYouShouldHide12345678901234567890';
+const secretKey = process.env.secretKey;
 
 app.use(bodyParser.json());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-
-const urlDB= `mysql://${process.env.MYSQLUSER}:${process.env.MYSQL_ROOT_PASSWORD}@${process.env.RAILWAY_TCP_PROXY_DOMAIN}:${process.env.RAILWAY_TCP_PROXY_PORT}/${process.env.MYSQL_DATABASE}`
+app.use(cors({ origin: process.env.ORIGINURL, credentials: true }));
 
 // Database connection
-const db = mysql.createConnection(urlDB);
+const db = mysql.createConnection({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE
+});
 
 db.connect(err => {
   if (err) {
