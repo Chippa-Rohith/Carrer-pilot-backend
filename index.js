@@ -43,9 +43,9 @@ const authenticateToken = (req, res, next) => {
 
 // Signup
 app.post('/signup', (req, res) => {
-  const { first_name, last_name, username, password, email, phone_number, role } = req.body;
+  const { first_name, last_name, userName, password, email, phone_number, role } = req.body;
 
-  db.query('SELECT username FROM golang_stud WHERE username = ?', [username], (err, result) => {
+  db.query('SELECT username FROM golang_stud WHERE username = ?', [userName], (err, result) => {
     if (err) return res.status(500).send(err);
     if (result.length > 0) return res.status(400).send('User exists');
 
@@ -62,6 +62,7 @@ app.post('/signup', (req, res) => {
 // Login
 app.post('/login', (req, res) => {
   const { userName, password } = req.body;
+  console.log(userName,password)
 
   db.query('SELECT username, password, role FROM golang_stud WHERE username = ?', [userName], (err, results) => {
     if (err) return res.status(500).send(err);
