@@ -141,7 +141,7 @@ app.post('/appliedApplicants', (req, res) => {
 
   db.query(`SELECT gs.first_name, gs.last_name, gs.email, gs.phone_number, aj.company_name, aj.job_title, aj.resume 
     FROM golang_stud gs 
-    INNER JOIN applied_jobs1 aj 
+    INNER JOIN applied_jobs aj 
     ON gs.username = aj.username 
     WHERE aj.posted_by = ?`, [userName], (err, results) => {
       if (err) return res.status(500).send(err);
@@ -157,7 +157,7 @@ app.post('/appliedApplicants', (req, res) => {
 app.post('/applyJob', (req, res) => {
   const { job_title, company_name, resume, userName, posted_by } = req.body;
 
-  db.query('SELECT username FROM applied_jobs1 WHERE username = ? AND company_name = ? AND job_title = ?', 
+  db.query('SELECT username FROM applied_jobs WHERE username = ? AND company_name = ? AND job_title = ?', 
     [userName, company_name, job_title], (err, results) => {
       if (err) return res.status(500).send(err);
 
@@ -165,7 +165,7 @@ app.post('/applyJob', (req, res) => {
         return res.status(200).send({ ResponseCode: 201, Respmessage: 'User already applied for the job' });
       }
 
-      db.query('INSERT INTO applied_jobs1 (username, job_title, company_name, resume, posted_by) VALUES (?, ?, ?, ?, ?)', 
+      db.query('INSERT INTO applied_jobs (username, job_title, company_name, resume, posted_by) VALUES (?, ?, ?, ?, ?)', 
         [userName, job_title, company_name, resume, posted_by], 
         (err, result) => {
           if (err) return res.status(500).send(err);
@@ -178,7 +178,7 @@ app.post('/applyJob', (req, res) => {
 app.post('/getJobsAppliedByUser', (req, res) => {
   const { userName } = req.body;
 
-  db.query('SELECT job_title, company_name, resume FROM applied_jobs1 WHERE username = ?', [userName], (err, results) => {
+  db.query('SELECT job_title, company_name, resume FROM applied_jobs WHERE username = ?', [userName], (err, results) => {
     if (err) return res.status(500).send(err);
     res.status(200).send({
       ResponseCode: 200,
