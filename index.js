@@ -34,7 +34,6 @@ db.connect(err => {
 // Utility function to authenticate JWT tokens
 const authenticateToken = (req, res, next) => {
   const token = req.header('Token');
-  console.log(req, token)
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, secretKey, (err, user) => {
@@ -65,8 +64,6 @@ app.post('/signup', (req, res) => {
 // Login
 app.post('/login', (req, res) => {
   const { userName, password } = req.body;
-  console.log(req.body)
-
   db.query('SELECT username, password, role FROM golang_stud WHERE username = ?', [userName], (err, results) => {
     if (err) return res.status(500).send(err);
     if (results.length === 0) return res.status(400).send('User does not exist');
