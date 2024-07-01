@@ -178,7 +178,7 @@ app.post('/applyJob', (req, res) => {
 app.post('/getJobsAppliedByUser', (req, res) => {
   const { userName } = req.body;
 
-  db.query('SELECT job_title, company_name, resume FROM applied_jobs WHERE username = ?', [userName], (err, results) => {
+  db.query('SELECT job_title, company_name, resume, posted_by FROM applied_jobs WHERE username = ?', [userName], (err, results) => {
     if (err) return res.status(500).send(err);
     res.status(200).send({
       ResponseCode: 200,
